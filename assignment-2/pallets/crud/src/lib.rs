@@ -12,6 +12,8 @@ pub mod pallet {
 	use frame_system::pallet_prelude::*;
 	use scale_info::prelude::vec::Vec;
 	use scale_info::TypeInfo;
+	use frame_support::traits::UnixTime;
+
 
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
@@ -23,6 +25,7 @@ pub mod pallet {
 		pub id: Vec<u8>,
 		pub name: Vec<u8>,
 		pub age: u8,
+		pub datetime: u64,
 	}
 
 	/// Configure the pallet by specifying the parameters and types on which it depends.
@@ -30,6 +33,8 @@ pub mod pallet {
 	pub trait Config: frame_system::Config {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+
+		type TimeProvider: UnixTime;
 	}
 
 	// The pallet's runtime storage items.
@@ -79,7 +84,7 @@ pub mod pallet {
 		) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
 
-			let student = Student { id: id.clone(), name, age };
+			let student = Student { id: id.clone(), name, age,  datetime: T::TimeProvider::now().as_secs()};
 
 			let student_id = T::Hashing::hash_of(&id);
 

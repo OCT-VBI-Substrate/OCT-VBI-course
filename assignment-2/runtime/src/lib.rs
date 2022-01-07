@@ -273,17 +273,24 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
+parameter_types! {
+	// One can own at most 999 Kitties
+	pub const MaxPriceOwned: u32 = 999;
+}
 
 /*
+/// Configure the pallet-template in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
+	type MaxPriceOwned = MaxPriceOwned;
+	type TimeProvider = pallet_timestamp::Pallet<Runtime>;
 }
 */
 
 /// Configure the pallet-crud in pallets/crud.
 impl pallet_crud::Config for Runtime {
 	type Event = Event;
+	type TimeProvider = pallet_timestamp::Pallet<Runtime>; 
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
