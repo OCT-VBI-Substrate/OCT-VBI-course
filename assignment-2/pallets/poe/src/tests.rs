@@ -9,9 +9,11 @@ fn it_works_for_default_value() {
 
 		assert_ok!(PoE::create_student(Origin::signed(1), student.id.clone(), student.name.clone(), student.age));
 
-		assert_eq!(PoE::delete_student(Origin::signed(1), student.id, student.name, student.age), Ok(()));
+		assert_eq!(PoE::delete_student(Origin::signed(1), student.id.clone(), student.name.clone(), student.age), Ok(()));
 
-        //assert_eq!(PoE::transfer_student(), Some(42));
+		assert_ok!(PoE::create_student(Origin::signed(1), student.id.clone(), student.name.clone(), student.age));
+
+        assert_eq!(PoE::transfer_student(Origin::signed(1), 20, student.id, student.name, student.age), Ok(()));
 	});
 }
 
