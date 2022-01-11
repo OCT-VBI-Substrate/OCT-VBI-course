@@ -41,6 +41,7 @@ pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
 pub use pallet_crud;
+pub use pallet_poe;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -293,6 +294,11 @@ impl pallet_crud::Config for Runtime {
 	type TimeProvider = pallet_timestamp::Pallet<Runtime>; 
 }
 
+/// Configure the pallet-crud in pallets/crud.
+impl pallet_poe::Config for Runtime {
+	type Event = Event;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -311,6 +317,7 @@ construct_runtime!(
 		// Include the custom logic from the pallet-template in the runtime.
 		//TemplateModule: pallet_template,
 		Crud: pallet_crud,
+		PoE: pallet_poe,
 	}
 );
 
